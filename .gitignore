@@ -1,0 +1,11 @@
+# Build artifacts
+bin/
+*.exe
+
+# Dependencies (depending on language)
+node_modules/
+vendor/
+go.sum
+.env
+.vscode/
+.idea/
