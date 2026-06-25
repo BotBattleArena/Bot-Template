@@ -2,10 +2,31 @@
 bin/
 *.exe
 
-# Dependencies (depending on language)
-node_modules/
-vendor/
+# Go
 go.sum
+
+# Python
+__pycache__/
+*.spec
+build/
+dist/
+
+# Rust
+target/
+Cargo.lock
+
+# C++
+json.hpp
+
+# C# / .NET
+obj/
+
+# JavaScript / Node.js
+node_modules/
+sea-prep.blob
+*.blob
+
+# IDE & Environment
 .env
 .vscode/
 .idea/
