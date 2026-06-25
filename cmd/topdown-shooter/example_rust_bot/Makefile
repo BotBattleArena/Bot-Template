@@ -1,13 +1,13 @@
 .PHONY: build clean
 
 BOT_NAME := example_rust_bot
-BIN_DIR  := ..\..\..\bin\topdown-shooter
+BIN_DIR  := ../../../bin/topdown-shooter
 
 build:
-	@cmd /c if not exist $(BIN_DIR) mkdir $(BIN_DIR)
-	@cargo build --release
-	@copy /Y target\release\$(BOT_NAME).exe $(BIN_DIR)\ >nul
+	@cmd /c if not exist "$(subst /,\,$(BIN_DIR))" mkdir "$(subst /,\,$(BIN_DIR))"
+	cmd /c cargo build --release
+	@cmd /c copy /Y target\release\$(BOT_NAME).exe "$(subst /,\,$(BIN_DIR))\" >nul
 
 clean:
-	@cargo clean
-	@cmd /c if exist $(BIN_DIR)\$(BOT_NAME).exe del /q $(BIN_DIR)\$(BOT_NAME).exe
+	-cmd /c cargo clean
+	@cmd /c if exist "$(subst /,\,$(BIN_DIR))\$(BOT_NAME).exe" del /q "$(subst /,\,$(BIN_DIR))\$(BOT_NAME).exe"
