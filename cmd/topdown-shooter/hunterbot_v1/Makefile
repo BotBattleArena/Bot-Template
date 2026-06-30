@@ -1,6 +1,6 @@
 .PHONY: build clean
 
-BOT_NAME := example_go_bot
+BOT_NAME := hunterbot_v1
 BIN_DIR  := ../../../bin/topdown-shooter
 
 ifeq ($(findstring sh,$(SHELL)),sh)
@@ -24,6 +24,7 @@ endif
 build:
 ifneq ($(HAS_GO),)
 	@$(call MKDIR,$(BIN_DIR))
+	go mod tidy
 	go build -o $(BIN_DIR)/$(BOT_NAME).exe main.go
 else
 	@echo "Warning: go compiler not found. Skipping $(BOT_NAME)."

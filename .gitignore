@@ -20,6 +20,7 @@ json.hpp
 
 # C# / .NET
 obj/
+.dotnet/
 
 # JavaScript / Node.js
 node_modules/

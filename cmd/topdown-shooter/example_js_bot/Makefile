@@ -3,21 +3,37 @@
 BOT_NAME := example_js_bot
 BIN_DIR  := ../../../bin/topdown-shooter
 
-# Node.js Single Executable Application (SEA) build process:
-# 1. Generate a SEA preparation blob from sea-config.json
-# 2. Copy the Node.js binary as our executable
-# 3. Inject the blob into the executable using postject
-# 4. Move the final executable to the output directory
+ifeq ($(OS),Windows_NT)
+    HAS_NODE := $(shell where node 2>nul)
+else
+    HAS_NODE := $(shell command -v node 2>/dev/null)
+endif
+
+ifeq ($(findstring sh,$(SHELL)),sh)
+    MKDIR = mkdir -p $(1)
+    RM = rm -f $(1)
+    MOVE = mv -f $(1) $(2)
+    DEV_NULL = /dev/null
+else
+    MKDIR = if not exist "$(subst /,\,$(1))" mkdir "$(subst /,\,$(1))"
+    RM = if exist "$(subst /,\,$(1))" del /q "$(subst /,\,$(1))"
+    MOVE = move /y "$(subst /,\,$(1))" "$(subst /,\,$(2))"
+    DEV_NULL = nul
+endif
 
 build:
-	@cmd /c if not exist "$(subst /,\,$(BIN_DIR))" mkdir "$(subst /,\,$(BIN_DIR))"
-	cmd /c node --experimental-sea-config sea-config.json
-	cmd /c node -e "require('fs').copyFileSync(process.execPath, '$(BOT_NAME).exe')"
-	cmd /c npx -y postject $(BOT_NAME).exe NODE_SEA_BLOB sea-prep.blob --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2 2>nul
-	@cmd /c move /y $(BOT_NAME).exe "$(subst /,\,$(BIN_DIR))\$(BOT_NAME).exe" >nul
-	@cmd /c del /q sea-prep.blob
+ifneq ($(HAS_NODE),)
+	@$(call MKDIR,$(BIN_DIR))
+	node --experimental-sea-config sea-config.json
+	node -e "require('fs').copyFileSync(process.execPath, '$(BOT_NAME).exe')"
+	npx -y postject $(BOT_NAME).exe NODE_SEA_BLOB sea-prep.blob --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2 2>$(DEV_NULL)
+	@$(call MOVE,$(BOT_NAME).exe,$(BIN_DIR)/$(BOT_NAME).exe)
+	@$(call RM,sea-prep.blob)
+else
+	@echo "Warning: node not found. Skipping $(BOT_NAME)."
+endif
 
 clean:
-	@cmd /c if exist sea-prep.blob del /q sea-prep.blob
-	@cmd /c if exist $(BOT_NAME).exe del /q $(BOT_NAME).exe
-	@cmd /c if exist "$(subst /,\,$(BIN_DIR))\$(BOT_NAME).exe" del /q "$(subst /,\,$(BIN_DIR))\$(BOT_NAME).exe"
+	@$(call RM,sea-prep.blob)
+	@$(call RM,$(BOT_NAME).exe)
+	@$(call RM,$(BIN_DIR)/$(BOT_NAME).exe)

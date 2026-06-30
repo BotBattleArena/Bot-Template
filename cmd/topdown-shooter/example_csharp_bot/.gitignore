@@ -1,0 +1,5 @@
+# C#/.NET build artifacts
+bin/
+obj/
+.dotnet/
+*.exe

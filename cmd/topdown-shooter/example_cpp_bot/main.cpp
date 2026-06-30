@@ -140,13 +140,13 @@ public:
 
     Game() {
         namespace fs = std::filesystem;
-        fs::path exe(std::string(
+        fs::path exe = std::string(
             #ifdef _WIN32
                 __argv[0]
             #else
                 program_invocation_name
             #endif
-        ));
+        );
         my_id = exe.stem().string();
     }
 

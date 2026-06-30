@@ -1,0 +1,7 @@
+module shooterbot_v1
+
+go 1.24.1
+
+toolchain go1.24.2
+
+require github.com/BotBattleArena/ArenaFramework v0.0.0-20260319171704-52855b102ab7

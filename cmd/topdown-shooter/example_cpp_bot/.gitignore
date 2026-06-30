@@ -1,0 +1,6 @@
+# C++ build artifacts
+bin/
+*.exe
+*.o
+*.obj
+json.hpp

@@ -141,7 +141,7 @@ public class SetupFrame
     public string Type { get; set; } = "";
 
     [JsonPropertyName("tick_duration_ms")]
-    public int TickDurationMs { get; set; }
+    public double TickDurationMs { get; set; }
 
     [JsonPropertyName("timeout_ms")]
     public int TimeoutMs { get; set; }
